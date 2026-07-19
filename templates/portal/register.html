@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | NexusHire AI</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-base: #04060d; 
+            --glass-bg: rgba(255, 255, 255, 0.06); 
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --neon-cyan: #06b6d4;
+            --neon-purple: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-base);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        /* Background Orbs */
+        .bg-orb {
+            position: absolute; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.35;
+            animation: floatOrb 10s infinite alternate ease-in-out;
+        }
+        .orb-1 { width: 500px; height: 500px; background: var(--neon-cyan); top: -150px; right: -150px; }
+        .orb-2 { width: 400px; height: 400px; background: var(--neon-purple); bottom: -100px; left: -100px; }
+
+        @keyframes floatOrb { 0% { transform: translate(0, 0); } 100% { transform: translate(-50px, -50px); } }
+
+        /* Glass Form Container */
+        .auth-glass {
+            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 40px; width: 100%; max-width: 550px; box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+
+        .brand-logo { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 25px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Inputs */
+        .custom-input { background: rgba(255,255,255,0.05) !important; border: 1px solid var(--glass-border) !important; color: #fff !important; border-radius: 10px; padding: 12px 15px; font-weight: 500; }
+        .custom-input:focus { border-color: var(--neon-cyan) !important; box-shadow: 0 0 10px rgba(6,182,212,0.3) !important; }
+        .custom-input::placeholder { color: #94a3b8 !important; }
+
+        /* Role Selection Cards */
+        .role-selector { display: flex; gap: 15px; margin-bottom: 25px; }
+        .role-option {
+            flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .role-option:hover { background: rgba(255,255,255,0.1); }
+        .role-option.active { border-color: var(--neon-purple); background: rgba(139, 92, 246, 0.15); box-shadow: 0 0 15px rgba(139,92,246,0.2); }
+        .role-icon { font-size: 1.8rem; margin-bottom: 10px; color: #a1a1aa; transition: 0.3s; }
+        .role-option.active .role-icon { color: var(--neon-purple); }
+
+        .btn-neon { background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: #fff; border: none; border-radius: 10px; padding: 12px; font-weight: 700; width: 100%; transition: 0.3s; }
+        .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); color: #fff; }
+        .link-neon { color: var(--neon-cyan); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .link-neon:hover { color: var(--neon-purple); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="auth-glass">
+            <div class="brand-logo"><i class="fa-solid fa-bolt me-2"></i>NexusHire AI</div>
+            <h4 class="fw-bold text-center mb-1">Create an Account</h4>
+            <p class="text-center mb-3" style="color: #94a3b8; font-size: 0.95rem;">Join the AI-powered recruitment network</p>
+
+            <!-- 🔴 Error Message Block -->
+            {% if error %}
+            <div class="alert alert-danger text-center p-2 mb-3" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- 🔴 Form action & POST method added -->
+            <form action="{% url 'register' %}" method="POST">
+                <!-- 🔴 Security Token added -->
+                {% csrf_token %}
+
+                <!-- Role Selection -->
+                <label class="form-label text-light fw-medium small mb-2">I want to...</label>
+                <div class="role-selector">
+                    <div class="role-option active" id="roleCandidate" onclick="selectRole('Candidate')">
+                        <i class="fa-solid fa-user-tie role-icon"></i>
+                        <h6 class="text-white mb-1 fw-bold">Find a Job</h6>
+                        <small style="color: #94a3b8;">Candidate Portal</small>
+                    </div>
+                    <div class="role-option" id="roleHR" onclick="selectRole('HR')">
+                        <i class="fa-solid fa-building-user role-icon"></i>
+                        <h6 class="text-white mb-1 fw-bold">Hire Talent</h6>
+                        <small style="color: #94a3b8;">HR Dashboard</small>
+                    </div>
+                </div>
+                <!-- 🔴 name="role" added -->
+                <input type="hidden" id="selectedRole" name="role" value="Candidate">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-light fw-medium small">Full Name</label>
+                        <!-- 🔴 name="fullname" added -->
+                        <input type="text" name="fullname" class="form-control custom-input" placeholder="John Doe" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-light fw-medium small">Email Address</label>
+                        <!-- 🔴 name="email" added -->
+                        <input type="email" name="email" class="form-control custom-input" placeholder="john@example.com" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-light fw-medium small">Password</label>
+                        <!-- 🔴 name="password" added -->
+                        <input type="password" name="password" class="form-control custom-input" placeholder="Min. 8 characters" required>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label text-light fw-medium small">Confirm Password</label>
+                        <input type="password" class="form-control custom-input" placeholder="Repeat password" required>
+                    </div>
+                </div>
+
+                <!-- 🔴 type="submit" added aur onclick hataya -->
+                <button type="submit" class="btn btn-neon mb-4">Create Account <i class="fa-solid fa-user-plus ms-2"></i></button>
+
+                <p class="text-center small mb-0" style="color: #94a3b8;">
+                    Already have an account? <a href="{% url 'login' %}" class="link-neon fw-bold">Log In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script for Role Selection UI -->
+    <script>
+        function selectRole(role) {
+            document.getElementById('roleCandidate').classList.remove('active');
+            document.getElementById('roleHR').classList.remove('active');
+            
+            document.getElementById('role' + role).classList.add('active');
+            document.getElementById('selectedRole').value = role;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
