@@ -1,25 +1,25 @@
-# 🚀 NexusHire AI 
+#  NexusHire AI 
 
 NexusHire AI is an advanced, AI-powered Resume Screening and HR Management Portal. It bridges the gap between recruiters and candidates by automating resume analysis, skill matching, and interview preparation.
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-### 🏢 For HR / Admins
+###  For HR / Admins
 * **Job Management:** Post, edit, and manage active job listings.
 * **AI Candidate Screening:** Automatically rank applicants based on their resume match score.
 * **Skill Gap Analysis:** Identify matched and missing skills instantly.
 * **Shortlisting System:** One-click shortlist or reject functionality.
 
-### 👨‍💻 For Candidates
+###  For Candidates
 * **Smart Profile:** Upload PDF/DOCX resumes for instant AI parsing.
 * **Job Application:** Apply for jobs and track application status.
 * **AI Mock Interview Engine:** Practice with dynamically generated, domain-specific questions (Python, HTML/CSS, Tally, Excel, etc.) and receive AI grading.
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 * **Backend:** Python, Django
 * **Frontend:** HTML5, CSS3, Bootstrap 5, Vanilla JavaScript
 * **Database:** SQLite3
@@ -27,7 +27,7 @@ NexusHire AI is an advanced, AI-powered Resume Screening and HR Management Porta
 
 ---
 
-## ⚙️ How to Run This Project Locally
+##  How to Run This Project Locally
 
 **1. Clone the repository:**
 \`\`\`bash
